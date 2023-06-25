@@ -27,7 +27,7 @@ async def payment_request(event_id: int):
             payment_data = await payment_service.create_payment(
                 amount=float(amount),
                 redirect_url="https://t.me/makeurmatch_bot",
-                callback_url="https://f406-67-209-129-23.ngrok-free.app/api/payment_notification/",
+                callback_url="https://f406-67-209-129-23.ngrok-free.app/api/payment_notification",
                 callback_data=json.dumps({"user_id": user.id, "event_id": event.id}),
                 expiration_date=str(datetime.datetime.now() + datetime.timedelta(days=7))
             )
