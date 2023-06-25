@@ -17,10 +17,12 @@ class Payment:
         request_url = PaymentServiceApiRoute.CREATE_PAYMENT.value
         request_body = {"amount": amount, "redirect_url": redirect_url, "callback_url": callback_url,
                         "callback_data": callback_data, "expiration_date": expiration_date}
-
+        headers = {
+            "Content-Type": "application/json"
+        }
         print(request_body)
-        async with self.session.post(url=request_url, data=json.dumps(request_body)) as response:
-            return response
+        async with self.session.post(url=request_url, data=json.dumps(request_body), headers=headers) as response:
+            return await response.json()
 
     async def check_status(self, payment_id):
         request_url = PaymentServiceApiRoute.GET_STATUS.value + f"/{payment_id}"

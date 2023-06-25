@@ -12,7 +12,9 @@ from sport_events.utils import is_valid_payment_status
 
 @api_view(['POST'])
 def payment_notification(request):
-    data = json.loads(request.body)
+    print(request.body)
+    print(request.POST)
+    data = request.POST
     status = data.get("status")
 
 

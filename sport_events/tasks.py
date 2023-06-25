@@ -24,19 +24,20 @@ async def payment_request(event_id: int):
     for team in event.teams:
         for user in team.participants:
             user_model = await get_or_none(TelegramUser, id=user.id)
-            payment_data = await (await payment_service.create_payment(
+            payment_data = await payment_service.create_payment(
                 amount=float(amount),
                 redirect_url="https://t.me/makeurmatch_bot",
-                callback_url="https://google.com",
+                callback_url="https://f406-67-209-129-23.ngrok-free.app/api/payment_notification/",
                 callback_data=json.dumps({"user_id": user.id, "event_id": event.id}),
                 expiration_date=str(datetime.datetime.now() + datetime.timedelta(days=7))
-            )).json()
+            )
             print(payment_data)
             payment = await Payment.objects.acreate(
-                event_id=payment_data.get("id"),
+                id=payment_data.get("id"),
+                event_id=event.id,
                 user=user_model,
                 amount=amount,
-                url=payment_data.get("payment_url")
+                url="http://127.0.0.1/" + payment_data.get("payment_url")
             )
 
             await bot.send_message(
@@ -105,8 +106,8 @@ async def notify_user_about_payment(data):
         text=await create_event_text(
             new_payment.event,
             ['status', 'show_teams', 'payment'],
-            payment_amount=payment.amount,
-            payment_status=payment.status
+            payment_amount=new_payment.amount,
+            payment_status=new_payment.status
         ),
     )
 
