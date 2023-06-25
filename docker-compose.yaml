@@ -1,0 +1,9 @@
+version: '2.1'
+
+services:
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./redisdata:/data
+    ports:
+      - "127.0.0.1:6379:6379"

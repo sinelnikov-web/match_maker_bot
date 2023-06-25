@@ -1,0 +1,1 @@
+from .router import module_router as match_making_service
